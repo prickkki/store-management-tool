@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="1" author="iulian_prichindel">
+        <createTable tableName="category_nomenclator">
+            <column name="id" type="int">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="discount" type="decimal(10, 2)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2" author="iulian_prichindel">
+        <createTable tableName="vendor_nomenclator">
+            <column name="id" type="int">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="varchar(255)"/>
+            <column name="country" type="varchar(255)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="3" author="iulian_prichindel">
+        <createTable tableName="store_unit_nomenclator">
+            <column name="id" type="int">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="manager" type="varchar(255)"/>
+            <column name="location" type="varchar(255)"/>
+            <column name="capacity" type="int"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="4" author="iulian_prichindel">
+        <createTable tableName="products">
+            <column name="id" type="int">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="quantity" type="int"/>
+            <column name="specification" type="text"/>
+            <column name="description" type="text"/>
+            <column name="category_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="vendor_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="store_unit_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="price_vendor" type="decimal(10,2)"/>
+            <column name="selling_price" type="decimal(10,2)"/>
+            <column name="discount" type="decimal(10,2)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="5" author="iulian_prichindel">
+        <createTable tableName="users">
+            <column name="userid" type="int">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)"/>
+            <column name="email" type="varchar(255)"/>
+            <column name="phone" type="varchar(50)"/>
+            <column name="address" type="varchar(255)"/>
+            <column name="age" type="int"/>
+            <column name="salary" type="decimal(10, 2)"/>
+            <column name="function" type="varchar(255)"/>
+            <column name="password" type="varchar(255)"/>
+            <column name="store_id" type="int"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="6" author="iulian_prichindel">
+        <createTable tableName="roles">
+            <column name="id" type="int">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="7" author="iulian_prichindel">
+        <createTable tableName="user_roles">
+            <column name="user_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="role_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="8" author="iulian_prichindel">
+        <createTable tableName="price_history">
+            <column name="product_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date" type="date"/>
+            <column name="price" type="decimal(10,2)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="9" author="iulian_prichindel">
+        <addForeignKeyConstraint
+                baseTableName="products"
+                baseColumnNames="category_id"
+                referencedTableName="category_nomenclator"
+                referencedColumnNames="id" constraintName="fk_category"/>
+
+        <addForeignKeyConstraint
+                baseTableName="products"
+                baseColumnNames="vendor_id"
+                referencedTableName="vendor_nomenclator"
+                referencedColumnNames="id" constraintName="fk_vendor"/>
+
+        <addForeignKeyConstraint
+                baseTableName="products"
+                baseColumnNames="store_unit_id"
+                referencedTableName="store_unit_nomenclator"
+                referencedColumnNames="id" constraintName="fk_store_unit"/>
+
+        <addForeignKeyConstraint
+                baseTableName="users"
+                baseColumnNames="store_id"
+                referencedTableName="store_unit_nomenclator"
+                referencedColumnNames="id" constraintName="fk_store_unit"/>
+
+        <addForeignKeyConstraint
+                baseTableName="user_roles"
+                baseColumnNames="user_id"
+                referencedTableName="users"
+                referencedColumnNames="userid" constraintName="fk_user"/>
+
+        <addForeignKeyConstraint
+                baseTableName="user_roles"
+                baseColumnNames="role_id"
+                referencedTableName="roles"
+                referencedColumnNames="id" constraintName="fk_role"/>
+
+        <addForeignKeyConstraint
+                baseTableName="price_history"
+                baseColumnNames="product_id"
+                referencedTableName="products"
+                referencedColumnNames="id" constraintName="fk_product"/>
+    </changeSet>
+
+</databaseChangeLog>
