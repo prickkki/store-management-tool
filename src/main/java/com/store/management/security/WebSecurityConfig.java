@@ -8,12 +8,12 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
 @RequiredArgsConstructor
-@Configuration
 @EnableWebSecurity
 public class WebSecurityConfig {
 
     private CustomOAuth2UserService customOAuth2UserService;
 
+    @Bean
     public HttpSecurity securityConfig(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(authz -> authz
