@@ -1,3 +1,3 @@
-package com.store.management.dto;
+package com.store.management.dtoRecord;
 
 public record PriceHistoryDTO(Long productId, String date, Double price) {}
